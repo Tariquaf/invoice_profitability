@@ -1,0 +1,40 @@
+[
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2026-01-06 16:09:05.688059",
+  "module": "Accounts",
+  "name": "Sales Below Cost Analysis Report",
+  "prepared_report": 0,
+  "query": "SELECT \r\n    si.name AS \"Invoice No\",\r\n    DATE(si.posting_date) AS \"Date\",\r\n    si.customer_name AS \"Customer\",\r\n    sii.item_code AS \"Item\",\r\n    sii.item_group AS \"Item Group\",\r\n    ROUND(sii.qty, 0) AS \"Quantity\",\r\n    ROUND(sii.rate, 2) AS \"Selling Rate\",\r\n    ROUND(sle.valuation_rate, 2) AS \"Avg. Cost\",\r\n    ROUND(ABS(sii.base_amount - (sle.valuation_rate * sii.stock_qty)), 2) AS \"Loss Amount\",\r\n    ROUND(((sle.valuation_rate * sii.stock_qty) - sii.base_amount) / sii.base_amount * 100, 2) AS \"Percent Loss\"\r\nFROM \r\n    `tabSales Invoice` si\r\nINNER JOIN \r\n    `tabSales Invoice Item` sii ON si.name = sii.parent INNER JOIN \r\n    `tabStock Ledger Entry` sle \r\n        ON sle.voucher_no = si.name \r\n        AND sle.voucher_type = \"Sales Invoice\"\r\n        AND sle.item_code = sii.item_code WHERE \r\n    si.docstatus = 1 \r\n    AND si.status != \"Cancelled\"\r\n    AND si.is_return = 0\r\n    AND sle.valuation_rate IS NOT NULL\r\n    AND sle.valuation_rate > 0\r\n    AND sii.rate < sle.valuation_rate\r\n    AND si.posting_date BETWEEN '2024-01-01' AND CURDATE() ORDER BY \r\n    ((sle.valuation_rate * sii.stock_qty) - sii.base_amount) / sii.base_amount * 100 DESC,\r\n    si.posting_date DESC;\r\n",
+  "ref_doctype": "Sales Invoice",
+  "reference_report": null,
+  "report_name": "Sales Below Cost Analysis Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Sales Below Cost Analysis Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Sales Below Cost Analysis Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   }
+  ],
+  "timeout": 0
+ }
+]

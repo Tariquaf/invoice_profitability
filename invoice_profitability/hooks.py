@@ -254,5 +254,11 @@ fixtures = [
             "dt": ["in", ["Sales Order", "Delivery Note", "Sales Invoice"]],
             "fieldname": ["in", ["custom_total_average_cost", "custom_total_incoming_cost", "custom_profit_", "custom_loss_"]]
         }
+    },
+    {
+        "doctype": "Report",
+        "filters": [
+            ["name", "=", "Sales Below Cost Analysis Report"]
+        ]
     }
 ]
