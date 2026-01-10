@@ -43,10 +43,11 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
-# doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
-# doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+doctype_js = {
+	"Sales Order": "public/js/sales_order.js",
+	"Delivery Note": "public/js/delivery_note.js",
+	"Sales Invoice": "public/js/sales_invoice.js"
+}
 
 # Svg Icons
 # ------------------
@@ -137,13 +138,20 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Sales Order": {
+		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
+		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
+	},
+	"Delivery Note": {
+		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
+		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
+	},
+	"Sales Invoice": {
+		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
+		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
+	}
+}
 
 # Scheduled Tasks
 # ---------------
