@@ -25,8 +25,8 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/invoice_profitability/css/invoice_profitability.css"
-# app_include_js = "/assets/invoice_profitability/js/invoice_profitability.js"
+app_include_css = "/assets/invoice_profitability/css/profitability.css"
+app_include_js = "/assets/invoice_profitability/js/profitability_calculator.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/invoice_profitability/css/invoice_profitability.css"
@@ -43,7 +43,12 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "Sales Order": "public/js/profitability_calculator.js",
+    "Delivery Note": "public/js/profitability_calculator.js",
+    "Sales Invoice": "public/js/profitability_calculator.js"
+}
+
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -137,13 +142,18 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "Sales Invoice": {
+        "before_save": "invoice_profitability.scripts.sales_invoice.calculate_profitability",
+        "validate": "invoice_profitability.scripts.sales_invoice.calculate_profitability"
+    },
+    "Sales Order": {
+        "before_save": "invoice_profitability.scripts.sales_invoice.calculate_profitability"
+    },
+    "Delivery Note": {
+        "before_save": "invoice_profitability.scripts.sales_invoice.calculate_profitability"
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -254,5 +264,11 @@ fixtures = [
             "dt": ["in", ["Sales Order", "Delivery Note", "Sales Invoice"]],
             "fieldname": ["in", ["custom_total_average_cost", "custom_total_incoming_cost", "custom_profit_", "custom_loss_"]]
         }
+    },
+    {
+        "doctype": "Report",
+        "filters": [
+            ["name", "=", "Sales Below Cost Analysis Report"]
+        ]
     }
 ]

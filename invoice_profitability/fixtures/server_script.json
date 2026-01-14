@@ -1,0 +1,12 @@
+[
+    {
+        "docstatus": 0,
+        "doctype": "Server Script",
+        "name": "Sales Invoice Profitability Check",
+        "script_type": "DocType Event",
+        "reference_doctype": "Sales Invoice",
+        "event_frequency": "All",
+        "disabled": 0,
+        "script": "# Check for loss before submitting sales invoice\nif flt(doc.custom_loss_) > 0 and doc.docstatus == 1:\n    # Import the check function\n    from invoice_profitability.invoice_profitability.utils import check_loss_sale\n    \n    result = check_loss_sale(doc.name)\n    \n    if result.get('has_loss'):\n        # Check if already confirmed\n        if not doc.custom_loss_confirmed:\n            frappe.throw(\n                \"This sale is at a loss of {0}% (Loss Amount: {1}). Please confirm the loss sale before submitting.\".format(\n                    flt(doc.custom_loss_, 2),\n                    flt(doc.custom_total_average_cost - doc.custom_total_incoming_cost, 2)\n                ),\n                title=\"Loss Sale Warning\"\n            )"
+    }
+]

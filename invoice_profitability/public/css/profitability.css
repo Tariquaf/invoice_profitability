@@ -1,0 +1,25 @@
+/* Highlight loss fields */
+.profit-loss-highlight {
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.loss-highlight {
+    background-color: #ffe6e6 !important;
+    border: 1px solid #ff9999 !important;
+}
+
+.profit-highlight {
+    background-color: #e6ffe6 !important;
+    border: 1px solid #99ff99 !important;
+}
+
+/* Custom field styling */
+[data-fieldname="custom_loss_"] .control-input {
+    font-weight: bold;
+}
+
+[data-fieldname="custom_profit_"] .control-input {
+    font-weight: bold;
+}
