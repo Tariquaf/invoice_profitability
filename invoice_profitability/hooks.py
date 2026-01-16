@@ -43,11 +43,6 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {
-	"Sales Order": "public/js/sales_order.js",
-	"Delivery Note": "public/js/delivery_note.js",
-	"Sales Invoice": "public/js/sales_invoice.js"
-}
 
 # Svg Icons
 # ------------------
@@ -137,21 +132,6 @@ doctype_js = {
 # Document Events
 # ---------------
 # Hook on document methods and events
-
-doc_events = {
-	"Sales Order": {
-		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
-		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
-	},
-	"Delivery Note": {
-		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
-		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
-	},
-	"Sales Invoice": {
-		"on_update": "invoice_profitability.invoice_profitability.api.update_profitability_fields",
-		"on_change": "invoice_profitability.invoice_profitability.api.update_profitability_fields"
-	}
-}
 
 # Scheduled Tasks
 # ---------------
@@ -270,3 +250,17 @@ fixtures = [
         ]
     }
 ]
+
+# Document Events
+doc_events = {
+    "Sales Invoice": {
+        "on_submit": "invoice_profitability.invoice_profitability.doctype_handlers.sales_invoice.validate_loss_on_submit"
+    }
+}
+
+# Include JS
+doctype_js = {
+    "Sales Order": "public/js/profitability_calculator.js",
+    "Delivery Note": "public/js/profitability_calculator.js",
+    "Sales Invoice": "public/js/profitability_calculator.js"
+}
